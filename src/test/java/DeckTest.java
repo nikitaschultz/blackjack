@@ -23,5 +23,13 @@ public class DeckTest {
         assertEquals(52, deck.getCards().size());
     }
 
+    @Test
+    public void canRemoveCard(){
+        deck.populate();
+        deck.remove();
+        deck.remove();
+        assertEquals(50, deck.getCards().size());
+    }
+
 
 }
