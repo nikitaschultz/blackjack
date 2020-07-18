@@ -8,18 +8,22 @@ public class Card {
     }
 
     public SuitType getSuit() {
-        return suit;
+        return this.suit;
     }
 
     public RankType getRank() {
-        return rank;
+        return this.rank;
     }
 
     public int getRankValue(){
-        return rank.getValue();
+        return this.rank.getValue();
     }
 
     public int getAlternativeRankValue(){
-        return rank.getAlternativeValue();
+        return this.rank.getAlternativeValue();
+    }
+
+    public String getName(){
+        return String.format("%s of %s", this.rank, this.suit);
     }
 }

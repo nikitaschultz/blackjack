@@ -6,12 +6,15 @@ import static org.junit.Assert.assertEquals;
 public class GameTest {
 
     private Game game;
-    private Player player;
+    private Player player1;
+    private Player player2;
+
 
     @Before
     public void Before(){
         game = new Game();
-        player = new Player("Nikita");
+        player1 = new Player("Nikita");
+        player2 = new Player("Tom");
     }
 
     @Test
@@ -21,8 +24,21 @@ public class GameTest {
 
     @Test
     public void canAddPlayers(){
-        game.add(player);
-        assertEquals(1, game.getPlayers().size());
+        game.add(player1);
+        game.add(player2);
+        assertEquals(2, game.getPlayers().size());
+    }
+
+    @Test
+    public void canDealCards(){
+        game.add(player1);
+        game.add(player2);
+        game.startGame();
+        game.dealCards();
+        assertEquals(46, game.getDeck().getCards().size());
+        assertEquals(2, player1.getCards().size());
+        assertEquals(2, player2.getCards().size());
+        assertEquals(2, game.getDealer().getCards().size());
     }
 
 }

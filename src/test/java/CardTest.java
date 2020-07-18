@@ -18,4 +18,9 @@ public class CardTest {
         assertEquals(1, card.getAlternativeRankValue());
     }
 
+    @Test
+    public void canGetStringName(){
+        assertEquals("ACE of CLUBS", card.getName());
+    }
+
 }
