@@ -33,4 +33,8 @@ public class Dealer {
     public boolean hitStatus(){
         return this.getTotal() < 16;
     }
+
+    public boolean isBust(){
+        return this.getTotal() > 21;
+    }
 }
