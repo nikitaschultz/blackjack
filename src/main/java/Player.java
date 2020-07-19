@@ -68,4 +68,11 @@ public class Player {
     public void resetChipsInPlay(){
         this.chipsInPlay = 0;
     }
+
+    public boolean hasBlackJack(){
+        if(this.cards.size() == 2 && this.getTotal() == 21){
+            return true;
+        }
+        return false;
+    }
 }

@@ -7,12 +7,14 @@ public class Game {
     private Dealer dealer;
     private Deck deck;
     private ArrayList<Player> playersInPlay;
+    private ArrayList<Player> playersBust;
 
     public Game() {
         this.players = new ArrayList<Player>();
         this.dealer = new Dealer();
         this.deck = new Deck();
         this.playersInPlay = new ArrayList<Player>();
+        this.playersBust = new ArrayList<Player>();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -156,7 +158,9 @@ public class Game {
                 inPlay = false;
             }
             if(player.isBust() == true){
+                System.out.println("   The " + player.getCards().get(player.getCards().size() - 1).getName());
                 System.out.println("BUST!  You're out for this round.");
+                this.playersBust.add(player);
                 inPlay = false;
             }
         }
@@ -234,20 +238,32 @@ public class Game {
                 }
             }
         }
+        for(Player player : this.playersBust){
+            System.out.println(String.format("%s lost %d chips.", player.getName(), player.getChipsInPlay()));
+        }
     }
 
-    public void resetPlayerChips(){
+    public void resetPlayerChipsInPlay(){
         for(Player player : this.players){
             player.resetChipsInPlay();
         }
     }
 
-    public void displayLeaderBoard(){
+    public void displayChips(){
         if(this.players.size() == 1){
             System.out.println(String.format("You have %d chips.", this.players.get(0).getChips()));
         }else{
             for(Player player : this.players){
                 System.out.println(String.format("%s has %d chips.", player.getName(), player.getChips()));
+            }
+        }
+    }
+
+    public void removePlayers(){
+        for(Player player : this.players){
+            if(player.getChips() == 0){
+                System.out.println(String.format("%s has no chips left and leaves the table.", player.getName()));
+                this.players.remove(player);
             }
         }
     }
@@ -265,24 +281,29 @@ public class Game {
             }
             this.dealer.resetCards();
 
+            this.getPlayerBets();
+
             this.dealCards();
             this.displayCards();
 
-            for(Player player : this.players){
-                this.playRound(player);
+            if(this.hasBlackJack()){
+                this.handleBlackJack();
+                this.pressEnterToContinue();
+            }else{
+                for(Player player : this.players){
+                    this.playRound(player);
+                }
+                this.playDealerRound();
+                this.pressEnterToContinue();
+                this.payoutPlayers();
             }
 
-            this.playDealerRound();
+            this.resetPlayerChipsInPlay();
+            this.displayChips();
 
-            this.pressEnterToContinue();
-
-            this.payoutPlayers();
-
-            this.pressEnterToContinue();
-
-            this.resetPlayerChips();
-
-            this.displayLeaderBoard();
+            this.removePlayers();
+            this.playersInPlay = new ArrayList<Player>();
+            this.playersBust = new ArrayList<Player>();
 
             System.out.println("To play another round type 'yes'.  To exit, type 'exit'.");
             String playAgain = scanner.nextLine();
@@ -290,6 +311,49 @@ public class Game {
             if(playAgain.equalsIgnoreCase("exit")){
                 System.out.println("Thanks for playing!");
                 inPlay = false;
+            }
+
+            if(this.players.size() == 0){
+                System.out.println("Thanks for playing!");
+                inPlay = false;
+            }
+        }
+    }
+
+    public boolean hasBlackJack(){
+        for(Player player : this.players){
+            if(player.hasBlackJack()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void handleBlackJack(){
+        for(Player player : this.players){
+            if(player.hasBlackJack()){
+                System.out.println(String.format("%s has blackjack!", player.getName()));
+                this.pressEnterToContinue();
+            }
+        }
+        if(dealer.hasBlackJack()){
+            System.out.println("The dealer has blackjack too.");
+            for(Player player : this.players){
+                if(player.hasBlackJack()){
+                    System.out.println(String.format("%s wins back their bet.", player.getName()));
+                    player.addChips(player.getChipsInPlay());
+                }else{
+                    System.out.println(String.format("%s loses their bet.", player.getName()));
+                }
+            }
+        }else{
+            for(Player player : this.players){
+                if(player.hasBlackJack()){
+                    System.out.println(String.format("%s wins %d chips!", player.getName(), player.getChipsInPlay() * 2));
+                    player.addChips(player.getChipsInPlay() * 2);
+                }else{
+                    System.out.println(String.format("%s loses their bet.", player.getName()));
+                }
             }
         }
     }

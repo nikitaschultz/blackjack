@@ -11,8 +11,6 @@ public class Runner {
 
         game.setInitialChips();
 
-        game.getPlayerBets();
-
         game.play();
 
     }
