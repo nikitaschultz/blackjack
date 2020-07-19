@@ -140,8 +140,6 @@ public class Game {
 
         System.out.println(String.format("It's your turn %s.", player.getName()));
 
-        this.pressEnterToContinue();
-
         System.out.println("   The " + player.getCards().get(0).getName());
 
         boolean inPlay = true;
@@ -260,11 +258,17 @@ public class Game {
     }
 
     public void removePlayers(){
+        ArrayList<Player> toBeRemoved = new ArrayList<Player>();
+
         for(Player player : this.players){
             if(player.getChips() == 0){
                 System.out.println(String.format("%s has no chips left and leaves the table.", player.getName()));
-                this.players.remove(player);
+                toBeRemoved.add(player);
             }
+        }
+
+        for(Player player : toBeRemoved){
+            this.players.remove(player);
         }
     }
 
@@ -305,17 +309,17 @@ public class Game {
             this.playersInPlay = new ArrayList<Player>();
             this.playersBust = new ArrayList<Player>();
 
-            System.out.println("To play another round type 'yes'.  To exit, type 'exit'.");
-            String playAgain = scanner.nextLine();
-
-            if(playAgain.equalsIgnoreCase("exit")){
-                System.out.println("Thanks for playing!");
-                inPlay = false;
-            }
-
             if(this.players.size() == 0){
                 System.out.println("Thanks for playing!");
                 inPlay = false;
+            }else{
+                System.out.println("To play another round type 'yes'.  To exit, type 'exit'.");
+                String playAgain = scanner.nextLine();
+
+                if (playAgain.equalsIgnoreCase("exit")) {
+                    System.out.println("Thanks for playing!");
+                    inPlay = false;
+                }
             }
         }
     }
