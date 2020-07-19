@@ -22,6 +22,10 @@ public class Player {
         return cards;
     }
 
+    public void resetCards(){
+        this.cards = new ArrayList<Card>();
+    }
+
     public void add(Card card){
         this.cards.add(card);
     }

@@ -33,7 +33,8 @@ public class GameTest {
     public void canDealCards(){
         game.add(player1);
         game.add(player2);
-        game.startGame();
+        game.populateDeck();
+        game.shuffleDeck();
         game.dealCards();
         assertEquals(46, game.getDeck().getCards().size());
         assertEquals(2, player1.getCards().size());

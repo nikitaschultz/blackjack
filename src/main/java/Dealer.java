@@ -12,6 +12,10 @@ public class Dealer {
         return this.cards;
     }
 
+    public void resetCards(){
+        this.cards = new ArrayList<Card>();
+    }
+
     public void add(Card card){
         this.cards.add(card);
     }

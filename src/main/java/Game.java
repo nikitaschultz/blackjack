@@ -31,8 +31,11 @@ public class Game {
         this.players.add(player);
     }
 
-    public void startGame(){
+    public void populateDeck(){
         this.deck.populate();
+    }
+
+    public void shuffleDeck(){
         this.deck.shuffle();
     }
 
@@ -189,9 +192,6 @@ public class Game {
 
         }
 
-
-
-
     }
 
     public void playerHit(Player player){
@@ -229,6 +229,8 @@ public class Game {
                 }else if(player.getTotal() == dealer.getTotal()){
                     player.addChips(player.getChipsInPlay());
                     System.out.println(String.format("%s drew with the dealer and gets back %d chips.", player.getName(), player.getChipsInPlay()));
+                }else{
+                    System.out.println(String.format("%s lost %d chips.", player.getName(), player.getChipsInPlay()));
                 }
             }
         }
@@ -241,7 +243,13 @@ public class Game {
     }
 
     public void displayLeaderBoard(){
-
+        if(this.players.size() == 1){
+            System.out.println(String.format("You have %d chips.", this.players.get(0).getChips()));
+        }else{
+            for(Player player : this.players){
+                System.out.println(String.format("%s has %d chips.", player.getName(), player.getChips()));
+            }
+        }
     }
 
     public void play(){
@@ -249,7 +257,14 @@ public class Game {
         boolean inPlay = true;
 
         while(inPlay == true){
-            this.startGame();
+            this.deck = new Deck();
+            this.populateDeck();
+            this.shuffleDeck();
+            for(Player player : this.players){
+                player.resetCards();
+            }
+            this.dealer.resetCards();
+
             this.dealCards();
             this.displayCards();
 
@@ -262,6 +277,9 @@ public class Game {
             this.pressEnterToContinue();
 
             this.payoutPlayers();
+
+            this.pressEnterToContinue();
+
             this.resetPlayerChips();
 
             this.displayLeaderBoard();
