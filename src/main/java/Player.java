@@ -4,10 +4,14 @@ public class Player {
 
     private String name;
     private ArrayList<Card> cards;
+    private int chips;
+    private int chipsInPlay;
 
     public Player(String name) {
         this.name = name;
         this.cards = new ArrayList<Card>();
+        this.chips = 0;
+        this.chipsInPlay = 0;
     }
 
     public String getName() {
@@ -38,5 +42,26 @@ public class Player {
 
     public boolean isBust(){
         return this.getTotal() > 21;
+    }
+
+    public int getChips(){
+        return this.chips;
+    }
+
+    public int getChipsInPlay(){
+        return this.chipsInPlay;
+    }
+
+    public void addChips(int numberOfChips){
+        this.chips += numberOfChips;
+    }
+
+    public void makeBet(int bet){
+        this.chips -= bet;
+        this.chipsInPlay += bet;
+    }
+
+    public void resetChipsInPlay(){
+        this.chipsInPlay = 0;
     }
 }

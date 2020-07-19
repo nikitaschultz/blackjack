@@ -9,8 +9,11 @@ public class Runner {
         Game game = new Game();
         game.createPlayers();
 
+        game.setInitialChips();
 
+        game.getPlayerBets();
 
+        game.play();
 
     }
 
